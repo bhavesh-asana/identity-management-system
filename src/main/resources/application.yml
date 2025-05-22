@@ -4,3 +4,7 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://asanabhavesh:y2qDsrnzDepVkUHM@ims.bfi6ri7.mongodb.net/ims?retryWrites=true&w=majority&appName=ims
+      auto-index-creation: false
+  jpa:
+    hibernate:
+      ddl-auto: update

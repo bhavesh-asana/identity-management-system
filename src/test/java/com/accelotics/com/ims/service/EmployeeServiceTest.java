@@ -1,6 +1,6 @@
 package com.accelotics.com.ims.service;
 
-import com.accelotics.com.ims.model.Address;
+import com.accelotics.com.ims.model.EmployeeAddress;
 import com.accelotics.com.ims.model.Person;
 import com.accelotics.com.ims.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
@@ -27,20 +27,20 @@ class EmployeeServiceTest {
   @Test
   void testAddPersonWithAddress() {
     // Arrange
-    Address address = new Address();
-    address.setId("101");
-    address.setStreet("123 Main St");
-    address.setCity("Springfield");
-    address.setState("IL");
-    address.setPostalCode("62704");
-    address.setCountry("USA");
+    EmployeeAddress employeeAddress = new EmployeeAddress();
+    employeeAddress.setId("101");
+    employeeAddress.setStreet("123 Main St");
+    employeeAddress.setCity("Springfield");
+    employeeAddress.setState("IL");
+    employeeAddress.setPostalCode("62704");
+    employeeAddress.setCountry("USA");
 
     Person person = new Person();
     person.setId("1");
     person.setFirstName("John");
     person.setLastName("Doe");
     person.setEmail("john.doe@example.com");
-    person.setAddress(address);
+    person.setEmployeeAddress(employeeAddress);
 
     // Mock the save method
     when(personRepository.save(person)).thenReturn(person);
@@ -54,12 +54,12 @@ class EmployeeServiceTest {
     assertEquals("John", savedPerson.getFirstName());
     assertEquals("Doe", savedPerson.getLastName());
     assertEquals("john.doe@example.com", savedPerson.getEmail());
-    assertNotNull(savedPerson.getAddress());
-    assertEquals("123 Main St", savedPerson.getAddress().getStreet());
-    assertEquals("Springfield", savedPerson.getAddress().getCity());
-    assertEquals("IL", savedPerson.getAddress().getState());
-    assertEquals("62704", savedPerson.getAddress().getPostalCode());
-    assertEquals("USA", savedPerson.getAddress().getCountry());
+    assertNotNull(savedPerson.getEmployeeAddress());
+    assertEquals("123 Main St", savedPerson.getEmployeeAddress().getStreet());
+    assertEquals("Springfield", savedPerson.getEmployeeAddress().getCity());
+    assertEquals("IL", savedPerson.getEmployeeAddress().getState());
+    assertEquals("62704", savedPerson.getEmployeeAddress().getPostalCode());
+    assertEquals("USA", savedPerson.getEmployeeAddress().getCountry());
 
     // Verify the save method was called
     verify(personRepository, times(1)).save(person);

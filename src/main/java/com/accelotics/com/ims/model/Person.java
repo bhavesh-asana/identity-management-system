@@ -2,8 +2,6 @@ package com.accelotics.com.ims.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -26,8 +24,10 @@ public class Person {
   private String email;
   private String phone;
 
-  // Address information
-  private Address address;
+  // EmployeeAddress information
+  private EmployeeAddress employeeAddress;
+
+  private Organization organization;
 
   public String getId() {
     return id;
@@ -93,11 +93,19 @@ public class Person {
     this.phone = phone;
   }
 
-  public Address getAddress() {
-    return address;
+  public EmployeeAddress getEmployeeAddress() {
+    return employeeAddress;
   }
 
-  public void setAddress(Address address) {
-    this.address = address;
+  public void setEmployeeAddress(EmployeeAddress employeeAddress) {
+    this.employeeAddress = employeeAddress;
+  }
+
+  public Organization getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
   }
 }
