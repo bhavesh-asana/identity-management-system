@@ -1,0 +1,2 @@
+# Identity Management System
+The Identity Management System (IMS) is a Spring Boot-based application designed to manage employee and organizational data. It provides functionality to store, retrieve, and update information about employees, their addresses, and associated organizations. The system leverages MongoDB as the database for storing and managing data.
