@@ -1,13 +1,14 @@
 package com.accelotics.com.ims.service;
 
-import com.accelotics.com.ims.model.Organization;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.accelotics.com.ims.model.employee.Employee;
+import com.accelotics.com.ims.model.company.Organization;
+import com.accelotics.com.ims.repository.CompanyLocationsRepository;
+import com.accelotics.com.ims.repository.EmployeeRepository;
+import com.accelotics.com.ims.repository.OrganizationRepository;
 import org.springframework.stereotype.Service;
 
-import com.accelotics.com.ims.model.EmployeeAddress;
-import com.accelotics.com.ims.model.Person;
+import com.accelotics.com.ims.model.employee.EmployeeAddress;
 import com.accelotics.com.ims.repository.AddressRepository;
-import com.accelotics.com.ims.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -18,51 +19,84 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
   @Autowired
-  private PersonRepository personRepository;
+  private EmployeeRepository employeeRepository;
 
   @Autowired
   private AddressRepository addressRepository;
+
   @Autowired
-  private MongoTemplate mongoTemplate;
+  private OrganizationRepository organizationRepository;
 
-  public Person addPerson(Person person) {
+  @Autowired
+  private CompanyLocationsRepository companyLocationsRepository;
 
-    /*
-     * This method saves a `Person` object to the database.
-     * It first checks if the `EmployeeAddress` associated with the person exists in the database.
-     * If it does, it updates the address; otherwise, it creates a new address.
-     * Finally, it saves the person object to the database.
-     */
-    EmployeeAddress employeeAddress = addressRepository.save(person.getEmployeeAddress());
-    Organization organization = person.getOrganization();
-    mongoTemplate.save(organization, "organizations");
-    person.setEmployeeAddress(employeeAddress);
-    person.setOrganization(organization);
-    return personRepository.save(person);
+  /**
+   * Adds a new employee to the database.
+   *
+   * This method saves the provided `employee` object to the `EmployeeRepository`.
+   * It also saves the associated `EmployeeAddress` and `Organization` if they are not null.
+   *
+   * @param employee the employee object to be added
+   * @return the saved employee object
+   */
+  public Employee addPerson(Employee employee) {
+//    EmployeeAddress employeeAddress = addressRepository.save(employee.getEmployeeAddress());
+//    Organization organization = organizationRepository.save(employee.getOrganization());
+//    organization = organizationRepository.save(organization);
+
+    employee.setEmployeeAddress(employee.getEmployeeAddress());
+    employee.setOrganization(employee.getOrganization());
+
+    return employeeRepository.save(employee);
   }
 
   /*
    * Retrieves a list of all employees from the database.
    *
-   * This method fetches all `Person` objects from the `PersonRepository` and populates
+   * This method fetches all `employee` objects from the `EmployeeRepository` and populates
    * their associated addresses by checking if the address exists in the `AddressRepository`.
    *
-   * @return a list of `Person` objects with their addresses populated.
+   * @return a list of `employee` objects with their addresses populated.
    */
-  public List<Person> getAllEmployees() {
-    List<Person> people = personRepository.findAll();
-    return people.stream().peek(person -> {
+  public List<Employee> getAllEmployees() {
+    List<Employee> people = employeeRepository.findAll();
+    return people.stream().peek(employee -> {
 
-      if (person.getEmployeeAddress() != null) {
-        Optional<EmployeeAddress> address = addressRepository.findById(person.getEmployeeAddress().getId());
-        address.ifPresent(person::setEmployeeAddress);
+      if (employee.getEmployeeAddress() != null) {
+        Optional<EmployeeAddress> address = addressRepository.findById(employee.getEmployeeAddress().getId());
+        address.ifPresent(employee::setEmployeeAddress);
       }
-      if (person.getOrganization() != null) {
-        Organization organization = person.getOrganization();
-        person.setOrganization(organization);
+      if (employee.getOrganization() != null) {
+        Organization organization = employee.getOrganization();
+        employee.setOrganization(organization);
       }
 
     }).collect(Collectors.toList());
+  }
+
+  /**
+   * Deletes an employee by their ID.
+   *
+   * This method checks if the employee with the given ID exists in the database.
+   * If it does, it deletes the employee; otherwise, it throws an exception.
+   *
+   * @param id the ID of the employee to be deleted
+   */
+  public void deleteEmployeeById(String id) {
+      if (employeeRepository.existsById(id)) {
+          employeeRepository.deleteById(id);
+      } else {
+          throw new IllegalArgumentException("employee with ID " + id + " does not exist.");
+      }
+  }
+
+  /**
+   * Deletes all employees from the database.
+   *
+   * This method clears all records from the `EmployeeRepository`.
+   */
+  public void deleteAllEmployees(){
+    employeeRepository.deleteAll();
   }
 
 }

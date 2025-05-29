@@ -1,6 +1,6 @@
 package com.accelotics.com.ims.repository;
 
-import com.accelotics.com.ims.model.EmployeeAddress;
+import com.accelotics.com.ims.model.employee.EmployeeAddress;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
