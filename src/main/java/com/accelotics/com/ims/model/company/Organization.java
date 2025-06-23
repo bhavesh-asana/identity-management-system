@@ -1,30 +1,29 @@
 package com.accelotics.com.ims.model.company;
 
-import com.accelotics.com.ims.model.utils.JobType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.persistence.*;
+
+/**
+ * Represents an organization in the system.
+ * This class is used to store information about the organization, including its name, type, and unique identifiers.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "organizations")
+@Entity
+@Table(name = "ims_company_organizations")
 public class Organization {
 
   @Id
-  private String id;
-  private String organizationName;
-  private String organizationType;
-  private String organizationId;
-
-  private String employeeRole;
-
-  private JobType employeeJobType;
-
-  private String employeeId;
-
-  private String companyLocationId;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id; // Unique identifier for the organization
+  private String organizationName; // Name of the organization
+  private String organizationType; // Type of the organization
+  private String organizationId; // Unique identifier for the organization, often used in external systems
 
 }

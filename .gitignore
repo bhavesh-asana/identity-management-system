@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Secrets ###
+identity-management-system.iml
+
 ### STS ###
 .apt_generated
 .classpath
