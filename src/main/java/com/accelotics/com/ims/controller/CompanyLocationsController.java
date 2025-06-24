@@ -1,78 +1,84 @@
 package com.accelotics.com.ims.controller;
 
 import com.accelotics.com.ims.model.company.CompanyLocations;
-import com.accelotics.com.ims.service.CompanyLocationsService;
+import com.accelotics.com.ims.services.CompanyLocationsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/ims/organization/company-locations")
+@RequestMapping("/company-locations")
 public class CompanyLocationsController {
 
   @Autowired
-  private CompanyLocationsService companyLocationsService;
+  private CompanyLocationsService service;
 
   /**
-   * Handles HTTP POST requests to the `/add-company-location` endpoint.
+   * Controller for managing company locations.
+   * Provides endpoints to create, read, update, and delete company location records.
    *
-   * This method creates a new `CompanyLocations` object and saves it to the database.
-   *
-   * @param companyLocations the `CompanyLocations` object to be created.
-   * @return the created `CompanyLocations` object.
+   * @return list of all company locations
    */
-  @PostMapping("/add-company-location")
-  public CompanyLocations createCompanyLocations(@RequestBody CompanyLocations companyLocations) {
-    return companyLocationsService.addCompanyLocation(companyLocations);
+  @GetMapping
+  public ResponseEntity<List<CompanyLocations>> getAllLocations() {
+    return ResponseEntity.ok(service.getAllLocations());
   }
 
   /**
-   * Handles HTTP PUT requests to the `/update-company-location/{id}` endpoint.
+   * Retrieves a specific company location by its ID.
    *
-   * This method updates an existing `CompanyLocations` object in the database.
-   *
-   * @param id the ID of the `CompanyLocations` object to be updated.
-   * @param updatedCompanyLocation the updated `CompanyLocations` object.
-   * @return the updated `CompanyLocations` object.
+   * @param id the ID of the company location
+   * @return the company location if found, or a 404 Not Found response
    */
-  @PutMapping("/update-company-location/{id}")
-  public CompanyLocations updateCompanyLocation(@PathVariable String id, @RequestBody CompanyLocations updatedCompanyLocation) {
-      return companyLocationsService.updateCompanyLocation(id, updatedCompanyLocation);
+  @GetMapping("/{id}")
+  public ResponseEntity<CompanyLocations> getLocationById(@PathVariable Long id) {
+    return service.getLocationById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
   /**
-   * Handles HTTP GET requests to the `/list-all-company-locations` endpoint.
+   * Creates a new company location.
    *
-   * This method retrieves a list of all `CompanyLocations` objects from the database.
-   *
-   * @return a list of `CompanyLocations` objects.
+   * @param location the company location to create
+   * @return the created company location
    */
-  @GetMapping("/list-all-company-locations")
-  public List<CompanyLocations> getAllCompanyLocations() {
-    return companyLocationsService.getAllCompanyLocations();
+  @PostMapping
+  public ResponseEntity<CompanyLocations> createLocation(@RequestBody CompanyLocations location) {
+    return ResponseEntity.ok(service.createLocation(location));
   }
 
   /**
-   * Handles HTTP DELETE requests to the `/delete-company-location/{id}` endpoint.
+   * Updates an existing company location.
    *
-   * This method deletes a `CompanyLocations` object by its ID from the database.
-   *
-   * @param id the ID of the `CompanyLocations` object to be deleted.
+   * @param id       the ID of the company location to update
+   * @param location the updated company location details
+   * @return the updated company location, or a 404 Not Found response if the ID does not exist
    */
-  @DeleteMapping("/delete-company-location/{id}")
-  public void deleteCompanyLocationById(@PathVariable String id) {
-    companyLocationsService.deleteCompanyLocationById(id);
+  @PutMapping("/{id}")
+  public ResponseEntity<CompanyLocations> updateLocation(@PathVariable Long id, @RequestBody CompanyLocations location) {
+    try {
+      return ResponseEntity.ok(service.updateLocation(id, location));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   /**
-   * Handles HTTP DELETE requests to the `/delete-all-company-locations` endpoint.
+   * Deletes a company location by its ID.
    *
-   * This method deletes all `CompanyLocations` objects from the database.
+   * @param id the ID of the company location to delete
+   * @return a 204 No Content response if successful, or a 404 Not Found response if the ID does not exist
    */
-  @DeleteMapping("/delete-all-company-locations")
-  public void deleteAllCompanyLocations() {
-    companyLocationsService.deleteAllCompanyLocations();
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
+    try {
+      service.deleteLocation(id);
+      return ResponseEntity.noContent().build();
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
+    }
   }
-
 }

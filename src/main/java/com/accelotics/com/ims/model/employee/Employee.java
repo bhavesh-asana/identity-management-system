@@ -1,6 +1,6 @@
 package com.accelotics.com.ims.model.employee;
 
-import com.accelotics.com.ims.config.EmployeeConfig;
+import com.accelotics.com.ims.config.CustomIdGenerator;
 import com.accelotics.com.ims.model.utils.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -70,6 +70,6 @@ public class Employee {
 
   @PostLoad
   private void populateDisplayName() {
-    this.displayName = EmployeeConfig.generateDisplayName(this);
+    this.displayName = CustomIdGenerator.generateDisplayName(this);
   }
 }

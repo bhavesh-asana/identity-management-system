@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class CompanyLocations {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_locations_seq")
+  @SequenceGenerator(name = "company_locations_seq", sequenceName = "ims_company_locations_seq", allocationSize = 1)
   private Long id; // Unique identifier for the location
   private String street; // Primary street address
   private String street2; // Optional field
