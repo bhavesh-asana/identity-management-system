@@ -1,0 +1,29 @@
+{
+  "id": "682fb4de9479c63e45176dfe",
+  "firstName": "Bhaves",
+  "middleName": null,
+  "lastName": "Asanabada",
+  "dateOfBirth": null,
+  "gender": null,
+  "email": "bhavesh.asana@outlook.com",
+  "phone": null,
+  "employeeAddress": {
+    "id": "682fb4db9479c63e45176dfc",
+    "street": "123 Main St",
+    "street2": "Apt 12",
+    "city": "Sunnyvalle",
+    "state": "CA",
+    "postalCode": "62704",
+    "country": "USA"
+  },
+  "organization": {
+    "id": "682fb4dd9479c63e45176dfd",
+    "organizationName": "TechCorp",
+    "organizationType": "IT Services",
+    "organizationId": "ORG12345",
+    "employeeRole": "SDE",
+    "employeeJobType": "contract",
+    "employeeId": "EMP67890",
+    "companyLocationId": null
+  }
+}

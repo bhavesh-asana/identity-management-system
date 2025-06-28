@@ -4,7 +4,22 @@ import com.accelotics.com.ims.model.employee.Employee;
 
 import java.util.UUID;
 
-public class CustomIdGenerator {
+public class CustomFieldGenerator {
+
+    /**
+     * Generates a unique Location ID in the format: ACLTS - XXXX
+     * where XXXX is a random 4-digit UUID.
+     *
+     * @parm null
+     * @return the generated Location ID
+     */
+    public static String generateLocationId() {
+        // Generate a random 4-digit UUID
+        String uuid = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
+
+        // Combine the prefix and UUID
+        return String.format("ACLTS-%s", uuid);
+    }
 
     /**
      * Generates a display name for an employee in the format: "FirstName MiddleName LastName"
